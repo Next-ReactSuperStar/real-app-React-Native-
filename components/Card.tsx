@@ -11,16 +11,25 @@ export const Card = ({ type, title, image, id, address, bedroom, bathroom, check
       <View key={id} style={styles.container}>
         <View key={id} style={[styles.item, { height: win.width + 20, width: win.width - 40 }]}>
           <Image style={[styles.image, { height: win.width - 90, width: win.width - 70 }]} source={{ uri: image }} />
+          {
+            checked ? <View style={{ position: 'absolute', right: 20, bottom:80 }}>
+              <Image style={{ width: 15, height: 15, marginRight: 5 }} source={require('../assets/icons/Favorite1(1).png')} />
+            </View>
+              : <View style={{ position: 'absolute', right: 20,bottom:80 }}>
+                <Image style={{ width: 25, height: 25, marginRight: 5 }} source={require('../assets/icons/Favorite1(2).png')} />
+              </View>
+          }
+
           <View style={{ marginHorizontal: 15, marginTop: 10 }}>
             <Text style={styles.homeTitleText}>{title}</Text>
-            <Text style={[styles.homeTitleText1, { color: '#297EE4', marginTop: 4 }]}>{address}</Text>
+            <Text style={[styles.homeTitleText, { color: '#297EE4', marginTop: 4 }]}>{address}</Text>
             <View style={{ flexDirection: 'row', marginTop: 4 }}>
               <View style={{ flexDirection: 'row' }}>
-                <Image style={{ width: 15, height: 15, marginRight: 5 }} source={require('../assets/icons/Vector_(2).png')} />
+                <Image style={{ width: 15, height: 15, marginRight: 5 }} source={require('../assets/icons/bedroom_icon.png')} />
                 <Text style={[styles.homeTitleText1, { width: 80 }]}>{bedroom}&nbsp;Bedroom</Text>
               </View>
               <View style={{ flexDirection: 'row' }}>
-                <Image style={{ width: 15, height: 15, marginRight: 5 }} source={require('../assets/icons/Group_1.png')} />
+                <Image style={{ width: 15, height: 15, marginRight: 5 }} source={require('../assets/icons/bathroom_icon.png')} />
                 <Text style={styles.homeTitleText1}>{bathroom}&nbsp;Bathroom</Text>
               </View>
             </View>
