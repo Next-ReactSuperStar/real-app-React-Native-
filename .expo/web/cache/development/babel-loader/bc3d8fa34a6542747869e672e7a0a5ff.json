@@ -1,0 +1,1 @@
+{"ast":null,"code":"export { DATA } from \"./GenerateImages\";","map":{"version":3,"sources":["D:/Tasks/Freelancer/Danil/ReactNative/mine/map/utils/index.ts"],"names":["DATA"],"mappings":"AAAA,SAASA,IAAT","sourcesContent":["export { DATA } from \"./GenerateImages\";\r\n"]},"metadata":{},"sourceType":"module"}
