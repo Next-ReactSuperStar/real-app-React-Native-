@@ -38,7 +38,7 @@ export const CarouselComponent = ({ layout, data }: { layout: any, data: any }) 
       <View >
         <Carousel
           autoplay={layout == 'default' ? true : false}
-          loop={true}
+          loop={layout == 'default' ? true : false}
           layout={layout}
           ref={carouselEl}
           data={data}

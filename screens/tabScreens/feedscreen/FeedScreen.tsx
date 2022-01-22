@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import {
   SafeAreaView, StyleSheet,
   TextInput, ScrollView, Image, TouchableOpacity, Animated, Dimensions
@@ -11,6 +11,7 @@ import { DATA } from "../../../utils";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<any>) {
   const [getMenuBtn, setMenuBtn] = React.useState(menuBtn)
+  const [mapData, setMapData] = useState<any>([])
 
   const win = Dimensions.get('window');
 
@@ -19,6 +20,41 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<any>) {
       getMenuBtn[index] = { title: item.title, state: index == data ? true : false }
     })
     setMenuBtn([...getMenuBtn])
+  }
+
+  useEffect(() => {
+
+    fetchData()
+  }, []);
+
+  const fetchData = () => {
+    fetch('http://ec2-3-144-42-178.us-east-2.compute.amazonaws.com:5000/api/user/089c839e-5a55-471f-ac5d-62dba5f4fa65/getFilteredListingsAtLocation?latitude=29.858924&longitude=-95.587894&radius=0.05',
+      {
+        method: 'get',
+        headers: {
+          'Content-Type': "application/json",
+          'password': 'passwordAUA'
+        },
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log('responseJson:----', responseJson)
+        setMapData([...replaceImageUrl(responseJson)])
+      }).catch((error) => {
+        fetchData()
+      })
+  }
+
+
+  const replaceImageUrl = (data: any) => {
+    data.map((item: any, index: any) => {
+      item.photosUrl.map((item1: any, index1: any) =>
+        item1[0] == 'S' || item1[0] == 's' ? data[index].photosUrl[index1] = 'https://zillowbucket.s3.us-east-2.amazonaws.com/' + data[index].photosUrl[index1].slice(18)
+          : data[index].photosUrl[index1] = data[index].photosUrl[index1]
+      )
+    })
+    console.log(data)
+    return data
   }
 
   return (
@@ -45,7 +81,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<any>) {
       </View>
       <View style={{ display: 'flex', alignItems: 'center', flex: 1 }}></View>
       <View style={{ display: 'flex', alignItems: 'center', flex: 50 }}>
-        <CarouselComponent layout="tinder" data={DATA} />
+        <CarouselComponent layout="stack" data={mapData} />
       </View>
     </View>
   );

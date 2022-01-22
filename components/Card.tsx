@@ -6,9 +6,6 @@ export type CardProps = typeof DATA[0];
 
 export const Card = ({ type, title, image, id, address, bedroom, bathroom, checked }:
   { type: any, title: any, image: any, id: any, address: any, bedroom: any, bathroom: any, checked: boolean }) => {
-
-
-
   return <>
     {type != 'default' ?
       <View key={id} style={styles.container}>
