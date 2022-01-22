@@ -25,6 +25,7 @@ export type RootStackParamList = {
   QuestionAge: undefined;
   QuestionId: undefined;
   Questionnaire: undefined;
+  ShowDetail: undefined;
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
 };
 

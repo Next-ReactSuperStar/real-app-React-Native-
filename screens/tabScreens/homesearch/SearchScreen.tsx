@@ -9,8 +9,9 @@ import { RootTabScreenProps } from '../../../types';
 import HomeListItem from '../../components/home/HomeListItem';
 import Geolocation from 'react-native-geolocation-service';
 import { menuBtn } from '../../../constants/menuBtn';
+import { NavigationProp } from '@react-navigation/native';
 
-const SearchScreen = ({ navigation }: RootTabScreenProps<any>) => {
+const SearchScreen = ({ navigation, route, value }: { navigation: NavigationProp<any>, route: any, value: any }) => {
     
     const mapRef = useRef<any>(null);
 
@@ -23,31 +24,17 @@ const SearchScreen = ({ navigation }: RootTabScreenProps<any>) => {
     });
 
 
-    useEffect(() => {
-        
-        fetchUsers()
-      },[SearchScreen]);
+
 
     const [showMap, setShowMap]=useState<boolean>(true)
     const [mapData, setMapData]=useState<any>([])
-    const [modePolygon, setPolygonCreated] = useState<boolean>(false);
-
-    const [isActiveDraw, setDrawMode] = useState<boolean>(false);
     const [isReady, setIsReady] = useState<boolean>(false);
-    // const [points, setPoints] = useState<TouchPoint[]>([]);
     const win = Dimensions.get('window');
-    // const [polygon, setPolygon] = useState<IDrawResult>(initialPolygon.current);
     const [markerNum, setMarkerNum] = useState<any>(0);
     const [noteShow, setNoteShow] = useState<boolean>(false);
     const [chooseMarker, setChooseMarker] = useState<boolean>(false);
     const handleMapReady = useCallback(() => mapRef.current && setIsReady(true), []);
 
-    const [text, onChangeText] = React.useState('');
-    const [number, onChangeNumber] = React.useState(null);
-    const [getBtninfo, onBtnPress] = React.useState(null)
-    
-    const [getMenuBtn, setMenuBtn] = React.useState(menuBtn)
-  
     const [initRegion, setInitRegion] = useState({
         latitude: 29.861145,
         longitude: -95.44252,
@@ -55,7 +42,11 @@ const SearchScreen = ({ navigation }: RootTabScreenProps<any>) => {
         longitudeDelta: 0.0421,
     });
 
-    
+    useEffect(() => {
+        
+        fetchUsers()
+      },[SearchScreen]);
+
     const fetchUsers = () => {
         fetchData({latitude:29.861145,longitude: -95.44252})
         // Geolocation.getCurrentPosition(
@@ -93,7 +84,6 @@ const SearchScreen = ({ navigation }: RootTabScreenProps<any>) => {
         .then((responseJson) => {
             console.log('responseJson:----',responseJson)
             setMapData([...replaceImageUrl(responseJson)])
-            // responseJson.data && setMapData(responseJson.data)
         }).catch((error) => {
             fetchData(location)
         })
@@ -106,7 +96,6 @@ const SearchScreen = ({ navigation }: RootTabScreenProps<any>) => {
         console.log(data)
         return data
     }
-        
 
     const zoomOut = async () => {
         if (!mapRef.current) return false;
@@ -154,6 +143,18 @@ const SearchScreen = ({ navigation }: RootTabScreenProps<any>) => {
                       longitudeDelta:initRegion.longitudeDelta})
     }
 
+    const showDetail=()=>{
+        console.log(markerNum)
+        
+        navigation.navigate('ShowDetail', { data:mapData[markerNum] })
+        // setIsDetail(true)
+        // onPress={}
+    }
+
+    const closewDetail=()=>{
+        // setIsDetail(false)
+    }
+
     return (
         <View style={styles.container}>
             <View style={{flexDirection:'row',padding:20,paddingBottom:5,backgroundColor:'white'}}>
@@ -194,17 +195,6 @@ const SearchScreen = ({ navigation }: RootTabScreenProps<any>) => {
                             <Image source={require('../../../assets/icons/maker_custom.png')} style={{width: 39, height: 84 }} resizeMode="contain"></Image>
                         </Marker>})
                         }
-                        {/* {
-                        isReady &&
-                            modePolygon &&
-                            polygon.polygons &&
-                            polygon.polygons.length > 0 && (
-                                <> */}
-                                    {/* {hasMarkerClose} */}
-                                    {/* {polygon.polygons.map(handlePolygon)} */}
-                                {/* </>
-                            ) 
-                            } */}
                     </MapView>
                     <View style={{position:'absolute',top:20,right:20,backgroundColor:'white',borderRadius:30}}>
                         <View style={{padding:5,paddingTop:5,paddingBottom:5}}>
@@ -223,18 +213,8 @@ const SearchScreen = ({ navigation }: RootTabScreenProps<any>) => {
                             <Image style={{width:28,height:28}} source={ require('../../../assets/icons/Group_(3).png')}/>
                         </TouchableOpacity>
                     </View>
-                    {/* <View style={{position:'absolute',top:163,right:20,borderRadius:40}}>
-                        <TouchableOpacity onPress={handleIsDraw}>
-                            {isActiveDraw ? (
-                                <Image style={{width:45,height:45,borderRadius:18}} source={require('../../../assets/icons/fluent_hand-draw-24-regular_(1).png')}/>
-                            ) : (
-                                <Image style={{width:45,height:45,borderRadius:18}} source={require('../../../assets/icons/fluent_hand-draw-24-regular.png')}/>
-                            )}
-                            
-                        </TouchableOpacity>
-                    </View> */}
                     <View style={{width:win.width-30,marginLeft:15,position:'absolute',bottom:90}}>
-                        {chooseMarker&&<HomeSearchResult indexData={mapData[markerNum]} />}
+                        {chooseMarker&&<HomeSearchResult indexData={mapData[markerNum]} chooseItem={showDetail}/>}
                         {noteShow && <HomeSearchShowResult indexData={{resultNum:mapData.length}} closeNote={closeNote}/>}
                     </View>
                 </View>
@@ -253,7 +233,8 @@ const SearchScreen = ({ navigation }: RootTabScreenProps<any>) => {
                             </View>
                         </View>
                     </ScrollView>
-                </View>}
+                </View>
+                }
             </View>
         </View>
     );

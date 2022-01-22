@@ -3,18 +3,20 @@ import { View, TouchableOpacity, Image, Dimensions, StyleSheet, ScrollView } fro
 
 // import Carousel from "react-native-snap-carousel";
 import Carousel from "./carosel";
-import { DATA } from "../utils";
+// import { DATA } from "../utils";
 import { CardProps, Card } from "./Card";
 const win = Dimensions.get('window');
 
 type LayoutProps = { layout?: "default" | "stack" | "tinder" | undefined };
 
-export const CarouselComponent = ({ layout }: LayoutProps) => {
+export const CarouselComponent = ({ layout, data }: { layout: any, data: any }) => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [itemid, setItemid] = useState<any>('');
+  const [carouselStyle, setCarouselStyle] = useState<any>({ sliderWidth: win.width - 40, itemWidth: win.width - 60 });
   const carouselEl = useRef(null);
   useEffect(() => {
-
+    console.log(data)
+    layout != 'default' ? setCarouselStyle({ sliderWidth: win.width - 25, itemWidth: win.width - 50 }) : setCarouselStyle({ sliderWidth: win.width - 40, itemWidth: win.width - 60 })
   }, []);
 
   const handleSnapToItem = (index: number) => {
@@ -23,24 +25,25 @@ export const CarouselComponent = ({ layout }: LayoutProps) => {
   };
 
   const renderItem = ({ item, index }: { item: CardProps; index: number }) => {
-    setItemid(item);
-    return (
-      <Card key={index} id={item.id} image={item.image} title={item.title} address={item.address} bedroom={item.bedroom} bathroom={item.bathroom} checked={item.checked} />
-    );
+    // setItemid(item);
+    return layout == 'default' ?
+      <Card key={index} type={layout} id={item.id} image={item} title={item.title} address={item.address} bedroom={item.numBed} bathroom={item.numBath} checked={item.checked} /> : (
+        <Card key={index} type={layout} id={item.id} image={item.photosUrl[0]} title={item.title} address={item.address} bedroom={item.numBed} bathroom={item.numBath} checked={item.checked} />
+      );
   }
 
   return (
-    <View style={{ flex: 1, alignItems: "center",marginBottom:30 }}>
+    <View style={{ flex: 1, alignItems: "center", marginBottom: 30 }}>
       {/* <ScrollView> */}
       <View >
         <Carousel
-          autoplay={true}
+          autoplay={layout == 'default' ? true : false}
           loop={true}
           layout={layout}
           ref={carouselEl}
-          data={DATA}
-          sliderWidth={365}
-          itemWidth={320}
+          data={data}
+          sliderWidth={carouselStyle.sliderWidth}
+          itemWidth={carouselStyle.itemWidth}
           renderItem={renderItem}
           onSnapToItem={(index: number) => handleSnapToItem(index)}
           layoutCardOffset={18}

@@ -2,15 +2,14 @@ import * as React from 'react';
 import { SafeAreaView, StyleSheet, 
         TextInput, ScrollView, Image, TouchableOpacity, ImageBackground, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-// import { Feather } from '@expo/vector-icons';
-// import EditScreenInfo from '../../../components/EditScreenInfo';
+import { NavigationProp } from '@react-navigation/native';
 import { Text, View } from '../../../components/Themed';
 import { RootTabScreenProps } from '../../../types';
 
-export default function HomeSearchResult({ indexData}: {indexData:any}) {
+export default function HomeSearchResult({ indexData,chooseItem}: {indexData:any,chooseItem:()=>void}) {
   const win = Dimensions.get('window');
   return (
-  <TouchableOpacity>
+  <TouchableOpacity onPress={chooseItem}>
     <View style={styles.homePopularView} >
       <Image style={{width:win.width*0.35,height:win.width*0.27,borderRadius:10,marginRight:10,marginLeft:10}}source={{uri:indexData.photosUrl[0]}}/>
       <View style={{width:win.width*0.5}}>

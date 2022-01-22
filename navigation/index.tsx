@@ -43,7 +43,7 @@ import FavoriteDetailScreen from '../screens/tabScreens/favorite/FavoriteDetailS
 //*********************QuestionnaireScreen**************** */
 import QuestionnaireScreen from '../screens/tabScreens/userscreen/Questionnaire/QuestionnaireScreen';
 
-
+import ShowDetailScreen from '../screens/components/ShowDetailScreen';
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
@@ -75,6 +75,7 @@ function RootNavigator() {
       <Stack.Screen name="QuestionId" component={QuestionIdScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ShowDetail" component={ShowDetailScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

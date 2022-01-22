@@ -8,7 +8,7 @@ import Colors from '../../constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
+export default function HomeScreen({ navigation }: RootTabScreenProps<'Search'>) {
   async function logout() {
     try {
       await Auth.signOut({ global: true });

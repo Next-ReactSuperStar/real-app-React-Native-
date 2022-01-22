@@ -7,6 +7,7 @@ import { Text, View } from '../../../components/Themed';
 import { RootTabScreenProps } from '../../../types';
 import { menuBtn } from '../../../constants/menuBtn';
 import { CarouselComponent } from "../../../components/Carousel";
+import { DATA } from "../../../utils";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<any>) {
   const [getMenuBtn, setMenuBtn] = React.useState(menuBtn)
@@ -44,7 +45,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<any>) {
       </View>
       <View style={{ display: 'flex', alignItems: 'center', flex: 1 }}></View>
       <View style={{ display: 'flex', alignItems: 'center', flex: 50 }}>
-        <CarouselComponent layout="tinder" />
+        <CarouselComponent layout="tinder" data={DATA} />
       </View>
     </View>
   );
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 30,
+    padding: 20,
     alignItems: "center",
     backgroundColor: "white",
   },
