@@ -72,15 +72,6 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
 
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-
-  addr_title: {
-    fontSize: 16,
-  },
-
   image: {
     flex: 1,
     borderRadius: 20,
