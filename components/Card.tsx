@@ -9,17 +9,16 @@ export const Card = ({ type, title, image, id, address, bedroom, bathroom, check
   return <>
     {type != 'default' ?
       <View key={id} style={styles.container}>
-        <View key={id} style={[styles.item, { height: win.width + 20, width: win.width - 40 }]}>
-          <Image style={[styles.image, { height: win.width - 90, width: win.width - 70 }]} source={{ uri: image }} />
+        <View key={id} style={[styles.item, { width: win.width - 40, height: win.width - 50 }]}>
+          <Image style={[styles.image, { height: win.width - 150, width: win.width - 70 }]} source={{ uri: image }} />
           {
-            checked ? <View style={{ position: 'absolute', right: 20, bottom: 83 }}>
-              <Image style={{ width: 15, height: 15, marginRight: 5 }} source={require('../assets/icons/Favorite1(1).png')} />
+            checked ? <View style={{ position: 'absolute', right: 20, bottom: 76 }}>
+              <Image style={{ width: 25, height: 25, marginRight: 5 }} source={require('../assets/icons/Favorite1(1).png')} />
             </View>
-              : <View style={{ position: 'absolute', right: 20, bottom: 83 }}>
+              : <View style={{ position: 'absolute', right: 20, bottom: 76 }}>
                 <Image style={{ width: 25, height: 25, marginRight: 5 }} source={require('../assets/icons/Favorite1(2).png')} />
               </View>
           }
-
           <View style={{ marginHorizontal: 15, marginTop: 10 }}>
             {/* <Text style={styles.homeTitleText}>{title}</Text> */}
             <Text style={[styles.homeTitleText, { color: '#297EE4', marginTop: 4 }]}>{address}</Text>
@@ -62,6 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: "white",
     padding: 15,
+    marginTop:0,
     marginVertical: 24,
     marginHorizontal: 8,
     marginBottom: 24,
@@ -73,9 +73,7 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    flex: 1,
     borderRadius: 20,
-    width: win.width - 80,
   },
 
   swip_icon: {

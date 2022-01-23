@@ -58,7 +58,7 @@ describe('Login Flow Test', () => {
         cy.get(loginScreenData.passwordField).as('password');
         cy.get(loginScreenData.loginButton).as('login-button');
 
-        cy.get('@username').type(loginScreenData.username); console.log("name", loginScreenData.username, loginScreenData.password)
+        cy.get('@username').type(loginScreenData.username); 
         cy.get('@password').type(loginScreenData.password);
 
         cy.get('@login-button').click();

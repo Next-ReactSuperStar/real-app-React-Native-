@@ -10,7 +10,7 @@ import { Text, View } from '../../../components/Themed';
 import { RootTabScreenProps } from '../../../types';
 import { menuBtn } from '../../../constants/menuBtn';
 
-export default function HomeDetailScreen({ navigation }: RootTabScreenProps<'Home'>) {
+export default function HomeDetailScreen({ navigation }: RootTabScreenProps<'User'>) {
   const [getMenuBtn, setMenuBtn] = React.useState(menuBtn)
   const win = Dimensions.get('window');
 

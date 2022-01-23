@@ -57,9 +57,9 @@ export const CarouselComponent = ({ layout, data }: { layout: any, data: any }) 
   }
 
   return (
-    <View style={{ flex: 1, alignItems: "center", marginBottom: 30 }}>
+    <View style={{ height: win.height - 300, position: 'relative', alignItems: "center", marginBottom: 30 }}>
       {/* <ScrollView> */}
-      <View >
+      <View>
         {
           fakerstate ?
             <Carousel
@@ -72,6 +72,8 @@ export const CarouselComponent = ({ layout, data }: { layout: any, data: any }) 
               data={realdata}
               sliderWidth={carouselStyle.sliderWidth}
               itemWidth={carouselStyle.itemWidth}
+              itemHeight={carouselStyle.itemWidth / 2 + 30}
+              sliderHeight={carouselStyle.sliderWidth / 2 + 30}
               renderItem={renderItem}
               onSnapToItem={(index: number) => handleSnapToItem(index)}
               layoutCardOffset={18}
@@ -82,8 +84,8 @@ export const CarouselComponent = ({ layout, data }: { layout: any, data: any }) 
             /> :
             <>
               <View style={[styles.container, { transform: [{ "rotate": '330deg' }] }]}>
-                <View style={[styles.item, { height: win.width + 20, width: win.width - 40 }]}>
-                  <Image style={[styles.image, { height: win.width - 90, width: win.width - 70 }]} source={{ uri: realdata[activeIndex].photosUrl[0] }} />
+                <View style={[styles.item, { width: win.width - 40, height: win.width - 50}]}>
+                  <Image style={[styles.image, { height: win.width - 150, width: win.width - 70  }]} source={{ uri: realdata[activeIndex].photosUrl[0] }} />
                   {
                     realdata[activeIndex].checked ? <View style={{ position: 'absolute', right: 20, bottom: 80 }}>
                       <Image style={{ width: 15, height: 15, marginRight: 5 }} source={require('../assets/icons/Favorite1(1).png')} />
@@ -114,10 +116,10 @@ export const CarouselComponent = ({ layout, data }: { layout: any, data: any }) 
               </View>
             </>
         }
-
       </View>
+      <View style={{ flex: 1 }}></View>
       {layout != 'default' &&
-        <View style={{ flex: 4, justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
+        <View style={{ justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: '1%' }}>
           <View style={{ width: (Dimensions.get('window').height - 40) * 9 / 37, flexDirection: 'row', }}>
             <TouchableOpacity style={{ marginRight: 'auto' }} onPress={() => decline()}>
               <Image style={styles.swip_icon} source={require('../assets/icons/dislike_icon.png')} />

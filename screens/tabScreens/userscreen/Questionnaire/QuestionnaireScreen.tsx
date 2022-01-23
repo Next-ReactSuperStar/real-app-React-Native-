@@ -411,9 +411,8 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
         }).catch((error) => {
           alert('error')
         })
-
     } catch (error) {
-      // Error retrieving data
+      fetchData();
     }
   }
 
@@ -443,6 +442,7 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
                         mode="outlined"
                         error={false}
                         accessibilityLabel='name'
+                        style={{ width: win.width / 1.5 }}
                       />
                     </View> :
                       editdata[i].data.map((item: any, index: any) => {
@@ -528,7 +528,8 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
           <View style={{ height: 80 }}></View>
 
         </View>
-      </ScrollView><View accessibilityRole='button' accessibilityLabel='qasavebtn' style={{ position: 'absolute', height: 60, width: win.width - 40, borderRadius: 30, bottom: 5, marginLeft: 20 }}>
+      </ScrollView>
+      <View accessibilityRole='button' accessibilityLabel='qasavebtn' style={{ height: 60, width: win.width - 40, borderRadius: 30, bottom: 5, marginLeft: 20 }}>
         <TouchableOpacity onPress={isEdit ? () => handleQuestionnaire() : () => { navigation.goBack() }}>
           <Text style={[styles.homeTitleText1, { textAlign: 'center' }]}>{isEdit ? 'Save' : 'Goto Profile'}</Text>
         </TouchableOpacity>
@@ -601,13 +602,13 @@ const styles = StyleSheet.create({
     marginLeft: '1%',
     marginTop: 5,
     marginBottom: 5,
-    padding: 10,
+    padding: 20,
     borderRadius: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
+    shadowColor: '#888',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
     shadowRadius: 5,
-    elevation: 5
+    elevation: 2,
   },
   homeTitleArrow: {
     width: 20,

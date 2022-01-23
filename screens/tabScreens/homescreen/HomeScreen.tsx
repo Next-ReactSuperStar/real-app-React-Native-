@@ -69,8 +69,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<any>) {
             <TouchableOpacity style={{ marginLeft: 'auto' }} onPress={() => navigation.navigate('HomeDetail')}>
               <Image style={styles.homeTitleArrow} source={require('../../../assets/icons/arrow-right.png')} />
             </TouchableOpacity>
-            <TouchableOpacity accessibilityRole='button' accessibilityLabel='userprofile' style={{ top: 280 }} onPress={() => navigation.navigate('User')}><Text style={{ color: 'red' }} >d</Text>
-            </TouchableOpacity>
+            
           </View>
 
           <HomePopularItem indexData={{ name: 'Orchad House', price: 'Rp. 2.000.000.000 / Year', bedroomNum: '5 Bedroom', bathroomNum: '2 Bathroom' }} />
