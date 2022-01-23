@@ -12,11 +12,11 @@ let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 const QuestionnareScreen = ({ navigation, route, value }: { navigation: NavigationProp<any>, route: any, value: any }) => {
   const [isEdit, setIsEdit] = useState(false);
   const win = Dimensions.get('window');
-  const [category_data, setCategory] = useState([{ category: '' }]);
+  const [category_data, setCategory] = useState<any>([{ category: '' }]);
   const [category_datasave, setCategorysave] = useState([{ category: '' }]);
-  const [editdata, setEditdata] = useState([]);
-  const [editdatasave, setEditdatasave] = useState([]);
-  const [isZeroCategory, setIsZeroCategory] = useState([])
+  const [editdata, setEditdata] = useState<any>([]);
+  const [editdatasave, setEditdatasave] = useState<any>([]);
+  const [isZeroCategory, setIsZeroCategory] = useState<any>([])
   const [percent, setPercent] = useState(0)
   const [testdata, setTextdata] = useState(['']);
   const [testdatasave, setTextdatasave] = useState(['']);
@@ -26,8 +26,7 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
 
   function handleInput(text: string, fieldType: string) {
     let arr: any[] = testdata;
-    category_data.map((item, index) => {
-      //@ts-ignore
+    category_data.map((item: any, index: number) => {
       if (item.possibleAnswers === null) {
         let name = 'name' + index;
         if (fieldType === name) {
@@ -80,21 +79,16 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
   const btnClick = (i: number, index: number) => {
     if (isEdit) {
       if (category_data[0].category.length > 0) {
-        //@ts-ignore
         if (editdata[i].doAllowMultipleAnswers) {
-          //@ts-ignore
           editdata[i].data[index].state = !editdata[i].data[index].state;
           setEditdata([...editdata]);
           let filterData: string = filterState;
           answerFilter(filterData);
         } else {
-          //@ts-ignore
           editdata[i].data.map((edit_data: any, k: number) => {
             if (k == index) {
-              //@ts-ignore
               edit_data.state = true;
             } else {
-              //@ts-ignore
               edit_data.state = false;
             }
             setEditdata([...editdata]);
@@ -109,18 +103,13 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
 
   const handleQuestionnaire = async () => {
     let post_data: any = [];
-    editdata.map((item, index) => {
-      //@ts-ignore
+    editdata.map((item: any, index: number) => {
       if (item.data === 'no') {
-        //@ts-ignore
         let answerLabel: string = category_data[index].answerLabel;
         let answer: object = { [answerLabel]: testdata[index] };
-        //@ts-ignore
         let questionId: string = category_data[index].questionId;
         let answer_data_individual: object = {};
-        //@ts-ignore
         if (category_data[index].answers.length > 0) {
-          //@ts-ignore
           let answerId: string = category_data[index].answers[0].answerId;
           answer_data_individual = { answer, questionId, answerId };
         } else {
@@ -132,18 +121,13 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
       } else {
         let q_answer: any = [];
         let answer_data_individual: object = {};
-        //@ts-ignore
-        item.data.map((ans_data, i) => {
+        item.data.map((ans_data: any, i: number) => {
           if (ans_data.state) {
             q_answer.push(ans_data.title);
-            //@ts-ignore
             let answerLabel: string = category_data[index].answerLabel;
             let answer: object = { [answerLabel]: q_answer };
-            //@ts-ignore
             let questionId: string = category_data[index].questionId;
-            //@ts-ignore
             if (category_data[index].answers.length > 0) {
-              //@ts-ignore
               let answerId: string = category_data[index].answers[0].answerId;
               answer_data_individual = { answer, questionId, answerId };
             } else {
@@ -151,14 +135,10 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
             }
           } else {
             q_answer.push();
-            //@ts-ignore
             let answerLabel: string = category_data[index].answerLabel;
             let answer: object = { [answerLabel]: q_answer };
-            //@ts-ignore
             let questionId: string = category_data[index].questionId;
-            //@ts-ignore
             if (category_data[index].answers.length > 0) {
-              //@ts-ignore
               let answerId: string = category_data[index].answers[0].answerId;
               answer_data_individual = { answer, questionId, answerId };
             } else {
@@ -169,20 +149,16 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
         post_data.push(answer_data_individual);
       }
     })
-    let real_post: object = { "answers": post_data };
+    let real_post: any = { "answers": post_data };
     let zeroArray: any[] = [];
     let cnt: number = 0;
-    //@ts-ignore
     real_post.answers.map((real: any, real_index: number) => {
-      // let zeroState: any = isZeroCategory
       if (real.answer == undefined) {
         cnt++;
         zeroArray.push(true);
       } else {
         zeroArray.push(false);
       }
-
-      //@ts-ignore
       setIsZeroCategory(zeroArray);
     })
 
@@ -412,9 +388,7 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
                 }
               }
             })
-            //@ts-ignore
             setEditdata(arr);
-            //@ts-ignore
             setEditdatasave(arr);
             setTextdata(textarr);
             setTextdatasave(textarr);
@@ -433,7 +407,7 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
 
   const renderList = () => {
     if (category_data[0].category.length > 0) {
-      return category_data.map((item: any, i) => {
+      return category_data.map((item: any, i: number) => {
         return (
           <View key={i} style={{ marginLeft: 20, marginRight: 20, flex: 1 }}>
             <View>
@@ -441,7 +415,6 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
                 <Text style={styles.homeTitleText}>{item.questionText}</Text>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 4 }}>
                   {
-                    //@ts-ignore
                     editdata[i].data === 'no' ? <View style={styles.loginForm}>
                       <TextInput
                         theme={{
@@ -460,7 +433,6 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
                         accessibilityLabel='name'
                       />
                     </View> :
-                      //@ts-ignore
                       editdata[i].data.map((item: any, index: any) => {
                         return <View key={index} style={{ flexDirection: 'row' }}>
                           <TouchableOpacity style={{ marginLeft: 'auto', marginRight: 5, marginTop: 3, marginBottom: 3, }}>
