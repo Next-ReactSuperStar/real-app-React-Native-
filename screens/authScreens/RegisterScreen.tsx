@@ -22,25 +22,25 @@ const Register = ({ navigation }: { navigation: NavigationProp<any>, route: any 
   const [password_error, setPassword_error] = useState('');
   const toast = useToast();
 
-  const fetchData = () => {
-    fetch('http://ec2-3-144-42-178.us-east-2.compute.amazonaws.com:5000/api/question/getCategories',
-      {
-        method: 'get',
-        headers: {
-          'Content-Type': "application/json",
-          'password': 'passwordAUA'
-        },
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        if (responseJson.length !== 0) {
-          // setCategory(responseJson);
-          console.log("category data", responseJson);
-        }
-      }).catch((error) => {
-        alert('error')
-      })
-  }
+  // const fetchData = () => {
+  //   fetch('http://ec2-3-144-42-178.us-east-2.compute.amazonaws.com:5000/api/question/getCategories',
+  //     {
+  //       method: 'get',
+  //       headers: {
+  //         'Content-Type': "application/json",
+  //         'password': 'passwordAUA'
+  //       },
+  //     })
+  //     .then((response) => response.json())
+  //     .then((responseJson) => {
+  //       if (responseJson.length !== 0) {
+  //         // setCategory(responseJson);
+  //         console.log("category data", responseJson);
+  //       }
+  //     }).catch((error) => {
+  //       alert('error')
+  //     })
+  // }
 
   const onSignup = () => {
     if (username) {

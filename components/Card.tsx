@@ -5,23 +5,23 @@ const win = Dimensions.get('window');
 export type CardProps = typeof DATA[0];
 
 export const Card = ({ type, title, image, id, address, bedroom, bathroom, checked }:
-  { type: any, title: any, image: any, id: any, address: any, bedroom: any, bathroom: any, checked: boolean }) => {
+  { type: any, title: any, image: any, id: any, address: any, bedroom: any, bathroom: any, checked: string }) => {
   return <>
     {type != 'default' ?
       <View key={id} style={styles.container}>
         <View key={id} style={[styles.item, { height: win.width + 20, width: win.width - 40 }]}>
           <Image style={[styles.image, { height: win.width - 90, width: win.width - 70 }]} source={{ uri: image }} />
           {
-            checked ? <View style={{ position: 'absolute', right: 20, bottom:80 }}>
+            checked ? <View style={{ position: 'absolute', right: 20, bottom: 83 }}>
               <Image style={{ width: 15, height: 15, marginRight: 5 }} source={require('../assets/icons/Favorite1(1).png')} />
             </View>
-              : <View style={{ position: 'absolute', right: 20,bottom:80 }}>
+              : <View style={{ position: 'absolute', right: 20, bottom: 83 }}>
                 <Image style={{ width: 25, height: 25, marginRight: 5 }} source={require('../assets/icons/Favorite1(2).png')} />
               </View>
           }
 
           <View style={{ marginHorizontal: 15, marginTop: 10 }}>
-            <Text style={styles.homeTitleText}>{title}</Text>
+            {/* <Text style={styles.homeTitleText}>{title}</Text> */}
             <Text style={[styles.homeTitleText, { color: '#297EE4', marginTop: 4 }]}>{address}</Text>
             <View style={{ flexDirection: 'row', marginTop: 4 }}>
               <View style={{ flexDirection: 'row' }}>

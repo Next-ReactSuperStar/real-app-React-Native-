@@ -1,13 +1,9 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import {
-  SafeAreaView, StyleSheet,
-  TextInput, ScrollView, Image, TouchableOpacity, Animated, Dimensions
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { Text, View } from '../../../components/Themed';
 import { RootTabScreenProps } from '../../../types';
 import { menuBtn } from '../../../constants/menuBtn';
 import { CarouselComponent } from "../../../components/Carousel";
-import { DATA } from "../../../utils";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<any>) {
   const [getMenuBtn, setMenuBtn] = React.useState(menuBtn)
@@ -23,7 +19,6 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<any>) {
   }
 
   useEffect(() => {
-
     fetchData()
   }, []);
 
@@ -64,7 +59,6 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<any>) {
         <View>
           <Text style={styles.title}>Choose house to live</Text>
         </View>
-        <View style={{ display: 'flex', alignItems: 'center', flex: 1 }}></View>
         <View>
           <ScrollView horizontal={true}>
             {
@@ -79,8 +73,8 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<any>) {
           </ScrollView>
         </View>
       </View>
-      <View style={{ display: 'flex', alignItems: 'center', flex: 1 }}></View>
-      <View style={{ display: 'flex', alignItems: 'center', flex: 50 }}>
+      {/* <View style={{ display: 'flex', alignItems: 'center', flex: 1 }}></View> */}
+      <View style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
         <CarouselComponent layout="stack" data={mapData} />
       </View>
     </View>

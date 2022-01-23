@@ -11,6 +11,7 @@ const UserScreen = ({ navigation, route, value }: { navigation: NavigationProp<a
   const [email, setEmail] = useState('beaulahschwartingrgq60@gmail.com');
   const [userid, setUserid] = useState('6ffea4d4-9065-4521-a8f5-a239311ad9ef');
   const [category_data, setCategory] = useState([]);
+  const [catename_data, setCatename_data] = useState<any>();
 
   useEffect(() => {
     getData();
@@ -45,6 +46,11 @@ const UserScreen = ({ navigation, route, value }: { navigation: NavigationProp<a
       .then((responseJson) => {
         if (responseJson.length !== 0) {
           setCategory(responseJson);
+          let arr: any = [];
+          responseJson.map((item: any, item_key: number) => {
+            arr.push(item.name);
+          })
+          setCatename_data(arr);
         }
       }).catch((error) => {
         alert('error')
@@ -65,7 +71,7 @@ const UserScreen = ({ navigation, route, value }: { navigation: NavigationProp<a
             <View style={{ position: 'absolute', top: win.width / 5 + 60, right: 15, maxWidth: win.width / 4 }} >
               {
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('Questionnaire', { category_name: category.name, user_id: userid })}
+                  onPress={() => navigation.navigate('Questionnaire', { category_name: category.name, user_id: userid, catename_data })}
                 >
                   <Text style={styles.btn_start} accessibilityRole='button' accessibilityLabel='qaStart' >Start</Text>
                 </TouchableOpacity>

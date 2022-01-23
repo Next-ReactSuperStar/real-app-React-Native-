@@ -25,11 +25,11 @@ const linking: LinkingOptions<RootStackParamList> = {
       QuestionId: 'questionid',
       Root: {
         screens: {
-          Home: {
-            screens: {
-              HomeScreen: 'home',
-            },
-          },
+          // Home: {
+          //   screens: {
+          //     HomeScreen: 'home',
+          //   },
+          // },
           Search: {
             screens: {
               SearchScreen: 'search',

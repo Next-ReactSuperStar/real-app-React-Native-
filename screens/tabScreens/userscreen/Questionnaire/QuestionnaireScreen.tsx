@@ -20,9 +20,8 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
   const [percent, setPercent] = useState(0)
   const [testdata, setTextdata] = useState(['']);
   const [testdatasave, setTextdatasave] = useState(['']);
-  const [isAnswered, setIsAnswered] = useState(false);
-  const [isUnanswered, setUnanswered] = useState(false);
   const [filterState, setFilterState] = useState('all');
+
   const toast = useToast();
 
   function handleInput(text: string, fieldType: string) {
@@ -45,11 +44,15 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
     let real_percent: number = 0;
     data.map((item: any, data_index: number) => {
       if (item.data === "no") {
-        testdata.map((text: any, text_index: number) => {
-          if (text != "") {
-            real_percent = real_percent + part_percent;
-          }
-        })
+        if (item.title != '') {
+          real_percent = real_percent + part_percent;
+        } else {
+          testdata.map((text: any, text_index: number) => {
+            if (text != "") {
+              real_percent = real_percent + part_percent;
+            }
+          })
+        }
       } else {
         if (item.doAllowMultipleAnswers) {
           let cnt: number = 0;
@@ -215,7 +218,18 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
     setIsEdit(false);
   }
   const Edit = () => {
-    setIsEdit(true);
+    console.log("state=====", isEdit)
+    if (isEdit) {
+      // let text_data = testdatasave;
+      // let edit_data = editdatasave;
+      // let ceto_data = category_datasave;
+      // setTextdata(text_data);
+      // setEditdata(edit_data);
+      // setCategory(ceto_data);
+      setIsEdit(false);
+    } else {
+      setIsEdit(true);
+    }
   }
 
   const answerFilter = (text: string) => {
@@ -225,7 +239,7 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
       let data_text = testdatasave;
       let data_cate = category_datasave;
       setTimeout(function () {
-        setEditdata(data);
+        setEditdata([...data]);
         setTextdata(data_text);
         setCategory(data_cate);
       }, 0.1);
@@ -258,7 +272,6 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
       })
       if (save_arr.length > 0) {
         setEditdata(save_arr);
-        setIsAnswered(false);
       } else {
         toast.show("There is no Answered Question.", {
           type: "danger",
@@ -266,7 +279,6 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
           duration: 4000,
           animationType: "slide-in",
         });
-        setIsAnswered(true);
       }
       if (save_text.length > 0) {
         setTextdata(save_text);
@@ -302,7 +314,6 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
       })
       if (save_arr.length > 0) {
         setEditdata(save_arr);
-        setUnanswered(false);
       } else {
         toast.show("There is no Unanswered Question.", {
           type: "danger",
@@ -310,7 +321,6 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
           duration: 4000,
           animationType: "slide-in",
         });
-        setUnanswered(true);
       }
       if (save_text.length > 0) {
         setTextdata(save_text);
@@ -322,13 +332,13 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
   }
 
   useEffect(() => {
-    fetchData('all');
+    fetchData();
   }, []);
 
-  const fetchData = async (filter_state: any) => {
+
+
+  const fetchData = async () => {
     try {
-      // let data = JSON.parse(value);
-      // let user_id = data.userId;
       const { category_name, user_id } = route.params;
       let fetchurl: any = 'http://ec2-3-144-42-178.us-east-2.compute.amazonaws.com:5000/api/user/' + user_id + '/category/' + category_name + '/answers';
       fetch(fetchurl,
@@ -341,7 +351,7 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
         })
         .then((response) => response.json())
         .then((responseJson) => {
-          console.log("db data",responseJson);
+          console.log("db data", responseJson);
           let textarr: any = [];
           if (responseJson.length !== 0) {
             let arr: any[] = [];
@@ -363,7 +373,6 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
                     doAllowMultipleAnswers: boolean;
                   }
                   let key: any = data.answerLabel;
-                  // let len: number = data.answers.length - 1;
                   data.possibleAnswers.map((possibleanswer: any, pos_index: number) => {
                     let cnt: number = 0;
                     data.answers[0].answer[key].map((answer: any, k: number) => {
@@ -411,6 +420,7 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
             setTextdatasave(textarr);
             setCategory(responseJson);
             setCategorysave(responseJson);
+            calcPercent(arr);
           }
         }).catch((error) => {
           alert('error')
@@ -425,59 +435,55 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
     if (category_data[0].category.length > 0) {
       return category_data.map((item: any, i) => {
         return (
-          <View key={i} style={{ marginLeft: 20, marginRight: 20 }}>
-            <ScrollView>
-              <View>
-                <View style={styles.homePopularView} >
-                  <Text style={styles.homeTitleText}>{item.questionText}</Text>
-                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 4 }}>
-                    {
+          <View key={i} style={{ marginLeft: 20, marginRight: 20, flex: 1 }}>
+            <View>
+              <View style={styles.homePopularView} >
+                <Text style={styles.homeTitleText}>{item.questionText}</Text>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 4 }}>
+                  {
+                    //@ts-ignore
+                    editdata[i].data === 'no' ? <View style={styles.loginForm}>
+                      <TextInput
+                        theme={{
+                          roundness: 16,
+                        }}
+                        underlineColorAndroid="transparent"
+                        outlineColor={!isEdit ? "#B00020" : "transparent"}
+                        activeOutlineColor={!isEdit ? "#B00020" : "#30C0E9"}
+                        disabled={!isEdit}
+                        value={testdata[i]}
+                        onChangeText={(text: any) => handleInput(text, 'name' + i)}
+                        label="write your data"
+                        autoComplete={'pass'}
+                        mode="outlined"
+                        error={false}
+                        accessibilityLabel='name'
+                      />
+                    </View> :
                       //@ts-ignore
-                      editdata[i].data === 'no' ? <View style={styles.loginForm}>
-                        <TextInput
-                          theme={{
-                            roundness: 16,
-                          }}
-                          underlineColorAndroid="transparent"
-                          outlineColor={!isEdit ? "#B00020" : "transparent"}
-                          activeOutlineColor={!isEdit ? "#B00020" : "#30C0E9"}
-                          disabled={!isEdit}
-                          value={testdata[i]}
-                          onChangeText={(text: any) => handleInput(text, 'name' + i)}
-                          label="write your data"
-                          autoComplete={'pass'}
-                          mode="outlined"
-                          error={false}
-                          accessibilityLabel='name'
-                        />
-                      </View> :
-                        //@ts-ignore
-                        editdata[i].data.map((item: any, index: any) => {
-                          return <View key={index} style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity style={{ marginLeft: 'auto', marginRight: 5, marginTop: 3, marginBottom: 3, }}>
-                              <Button mode='contained'
-                                color={isEdit && item.state ? '#30C0E9' : item.state && !isEdit ? '#7BC67E' : '#D0D8E0'}
-                                style={{ borderRadius: 20 }}
-                                labelStyle={{ color: 'white' }}
-                                contentStyle={{ flexDirection: 'row-reverse' }}
-                                icon={isEdit && item.state ? "close-circle" : ''}
-                                onPress={() => btnClick(i, index)}
-                                accessibilityRole={'button'}
-                                accessibilityLabel={i + 'testbtn' + index}
-                              >
-                                {item.title}
-                              </Button>
-
-                            </TouchableOpacity>
-                          </View>
-                        })}
-                  </View>
+                      editdata[i].data.map((item: any, index: any) => {
+                        return <View key={index} style={{ flexDirection: 'row' }}>
+                          <TouchableOpacity style={{ marginLeft: 'auto', marginRight: 5, marginTop: 3, marginBottom: 3, }}>
+                            <Button mode='contained'
+                              color={isEdit && item.state ? '#30C0E9' : item.state && !isEdit ? '#7BC67E' : '#D0D8E0'}
+                              style={{ borderRadius: 20 }}
+                              labelStyle={{ color: 'white' }}
+                              contentStyle={{ flexDirection: 'row-reverse' }}
+                              icon={isEdit && item.state ? "close-circle" : ''}
+                              onPress={() => btnClick(i, index)}
+                              accessibilityRole={'button'}
+                              accessibilityLabel={i + 'testbtn' + index}
+                            >
+                              {item.title}
+                            </Button>
+                          </TouchableOpacity>
+                        </View>
+                      })}
                 </View>
-
-                {isZeroCategory[i] && isEdit && <Text style={{ color: '#FF737F', fontSize: 12, fontWeight: '300' }}>Select at least one parameter</Text>}
               </View>
-              <View style={{ height: 80 }}></View>
-            </ScrollView>
+              {isZeroCategory[i] && isEdit && <Text style={{ color: '#FF737F', fontSize: 12, fontWeight: '300' }}>Select at least one parameter</Text>}
+            </View>
+            <View style={{ height: 20 }}></View>
           </View>
         )
       })
@@ -485,55 +491,69 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
   }
 
   return (
-    <ScrollView>
-      <View style={styles.loginWrap}>
-        <View style={{ marginTop: 30, marginBottom: 10, flexDirection: 'row' }}>
-          {
-            category_data[0].category.length > 0 ? <Text style={styles.title}>{category_data[0].category}</Text>
-              : <></>
-          }
-          <View style={{ flexDirection: 'row', marginLeft: 'auto' }}>
-            <Text style={[styles.title, { color: isEdit ? '#30C0E9' : '#D0D8E0' }]}>{percent.toFixed(0)}%</Text>
-            <TouchableOpacity accessibilityRole='button' accessibilityLabel='editbtn' style={{ marginTop: 5, }} onPress={() => Edit()}>
-              {isEdit ? <Image style={{ width: 15, height: 18, marginTop: 'auto', marginBottom: 10, marginRight: 30, marginLeft: 5 }} source={require('../../../../assets/icons/Vector_(6).png')} /> :
-                <Image style={{ width: 15, height: 18, marginTop: 'auto', marginBottom: 10, marginRight: 30, marginLeft: 5 }} source={require('../../../../assets/icons/Vector_(5).png')} />}
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <ScrollView>
+        <View style={styles.loginWrap}>
+          <View style={styles.gotobtn}>
+            <View style={{ width: 80 }} >
+              <TouchableOpacity
+                onPress={() => navigation.goBack()} >
+                <Image style={{ width: 50, height: 50, marginLeft: '5%' }} source={require('../../../../assets/icons/backBtn.png')} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={{ marginTop: 10, marginBottom: 10, flexDirection: 'row' }}>
+            {
+              category_data[0].category.length > 0 ? <Text style={styles.title}>{category_data[0].category}</Text>
+                : <></>
+            }
+            <View style={{ flexDirection: 'row', marginLeft: 'auto' }}>
+              <Text style={[styles.title, { color: isEdit ? '#30C0E9' : '#D0D8E0' }]}>{percent.toFixed(0)}%</Text>
+              <TouchableOpacity accessibilityRole='button' accessibilityLabel='editbtn' style={{ marginTop: 5, }} onPress={() => Edit()}>
+                {isEdit ?
+                  <Image style={{ width: 25, height: 30, marginTop: 'auto', marginBottom: 10, marginRight: 30, marginLeft: 5, top: 7 }} source={require('../../../../assets/icons/close.jpg')} />
+                  :
+                  <Image style={{ width: 25, height: 30, marginTop: 'auto', marginBottom: 10, marginRight: 30, marginLeft: 5, top: 7 }} source={require('../../../../assets/icons/edit.jpg')} />
+                }
+              </TouchableOpacity>
+
+            </View>
+          </View>
+          <View style={styles.questionProgress} >
+            <View style={styles.progGender}>
+              <View style={[styles.progGenderIN, { width: percent.toFixed(0) + '%' }]}></View>
+            </View>
+          </View>
+          <View style={styles.answer_filter}>
+            <TouchableOpacity onPress={() => answerFilter('all')}>
+              <Text style={[styles.filter_btn, { color: '#30C0E9' }]} accessibilityRole='button' accessibilityLabel='btn_all'>All</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => answerFilter('answered')} accessibilityRole='button' accessibilityLabel='btn_answered'>
+              <Text style={[styles.filter_btn, { color: '#30C0E9' }]}>Answered</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => answerFilter('unanswered')} accessibilityRole='button' accessibilityLabel='btn_unanswered'>
+              <Text style={[styles.filter_btn, { color: '#30C0E9' }]}>Unanswered</Text>
+            </TouchableOpacity>
+
           </View>
-        </View>
-        <View style={styles.questionProgress} >
-          <View style={styles.progGender}>
-            <View style={[styles.progGenderIN, { width: percent.toFixed(0) + '%' }]}></View>
-          </View>
-        </View>
-        <View style={styles.answer_filter}>
-          <TouchableOpacity onPress={() => answerFilter('all')}>
-            <Text style={[styles.filter_btn, { color: '#30C0E9' }]} accessibilityRole='button' accessibilityLabel='btn_all'>All</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => answerFilter('answered')} accessibilityRole='button' accessibilityLabel='btn_answered'>
-            <Text style={[styles.filter_btn, { color: '#30C0E9' }]}>Answered</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => answerFilter('unanswered')} accessibilityRole='button' accessibilityLabel='btn_unanswered'>
-            <Text style={[styles.filter_btn, { color: '#30C0E9' }]}>Unanswered</Text>
-          </TouchableOpacity>
+          {
+            renderList()
+          }
+          <View style={{ height: 80 }}></View>
 
         </View>
-        {
-          renderList()
-        }
-        <View accessibilityRole='button' accessibilityLabel='qasavebtn' style={{ position: 'absolute', height: 60, width: win.width - 40, borderRadius: 30, bottom: 5, marginLeft: 20 }}>
-          <TouchableOpacity onPress={isEdit ? () => handleQuestionnaire() : () => { navigation.goBack() }}>
-            <Text style={[styles.homeTitleText1, { textAlign: 'center' }]}>{isEdit ? 'Save' : 'Next'}</Text>
-          </TouchableOpacity>
-        </View>
+      </ScrollView><View accessibilityRole='button' accessibilityLabel='qasavebtn' style={{ position: 'absolute', height: 60, width: win.width - 40, borderRadius: 30, bottom: 5, marginLeft: 20 }}>
+        <TouchableOpacity onPress={isEdit ? () => handleQuestionnaire() : () => { navigation.goBack() }}>
+          <Text style={[styles.homeTitleText1, { textAlign: 'center' }]}>{isEdit ? 'Save' : 'Goto Profile'}</Text>
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
 export default QuestionnareScreen
-
 
 import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
@@ -568,7 +588,6 @@ const styles = StyleSheet.create({
   },
   loginWrap: {
     flex: 1,
-    backgroundColor: 'white'
   },
   questionProgress: {
     paddingRight: '7%',
@@ -643,5 +662,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginHorizontal: 15,
-  }
+  },
+  gotobtn: {
+    margin: 20,
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginTop: 30,
+    marginBottom: 10,
+  },
 });
