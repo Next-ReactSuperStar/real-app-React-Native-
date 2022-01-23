@@ -7,7 +7,6 @@ import { TextInput } from 'react-native-paper';
 import { Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useToast } from "react-native-toast-notifications";
-let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
 const QuestionnareScreen = ({ navigation, route, value }: { navigation: NavigationProp<any>, route: any, value: any }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -193,15 +192,22 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
     }
     setIsEdit(false);
   }
-  const Edit = () => {
-    console.log("state=====", isEdit)
+  const Edit = async () => {
     if (isEdit) {
-      // let text_data = testdatasave;
-      // let edit_data = editdatasave;
-      // let ceto_data = category_datasave;
-      // setTextdata(text_data);
-      // setEditdata(edit_data);
-      // setCategory(ceto_data);
+      try {
+        const value = await AsyncStorage.getItem('show_data');
+        const text_value = await AsyncStorage.getItem('text_data');
+        if (value != null) {
+          let mydata: any = JSON.parse(value);
+          setEditdata(mydata);
+        }
+        if (text_value != null) {
+          let mydata: any = JSON.parse(text_value);
+          setTextdata(mydata);
+        }
+      } catch (error) {
+
+      }
       setIsEdit(false);
     } else {
       setIsEdit(true);
@@ -326,7 +332,7 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
           },
         })
         .then((response) => response.json())
-        .then((responseJson) => {
+        .then(async (responseJson) => {
           console.log("db data", responseJson);
           let textarr: any = [];
           if (responseJson.length !== 0) {
@@ -388,6 +394,12 @@ const QuestionnareScreen = ({ navigation, route, value }: { navigation: Navigati
                 }
               }
             })
+            try {
+              await AsyncStorage.setItem('show_data', JSON.stringify(arr));
+              await AsyncStorage.setItem('text_data', JSON.stringify(textarr));
+            } catch (error) {
+              // Error saving data
+            }
             setEditdata(arr);
             setEditdatasave(arr);
             setTextdata(textarr);
@@ -619,10 +631,10 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   loginForm: {
-    // flex: 2,
     justifyContent: 'center',
     paddingLeft: '5%',
     paddingRight: '4%',
+    height: 70
   },
   answer_filter: {
     margin: 20,

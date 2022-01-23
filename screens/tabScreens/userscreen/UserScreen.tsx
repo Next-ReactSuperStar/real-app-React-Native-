@@ -84,48 +84,51 @@ const UserScreen = ({ navigation, route, value }: { navigation: NavigationProp<a
   }
 
   return (
-    <ScrollView>
-      <View style={styles.loginWrap}>
-        <View style={{ display: 'flex', alignItems: 'center', height: 40 }}></View>
-        <View style={{ flexDirection: 'row', marginBottom: 15, }}>
-          <Text style={styles.title}>Profile</Text>
-          <TouchableOpacity style={{ marginLeft: 'auto', marginRight: 30 }}
-          // onPress={() => navigation.navigate('Questionnaire')}
-          >
-            <Image style={{ width: 15, height: 15, marginTop: 'auto', marginBottom: 10 }} source={require('../../../assets/icons/Vector_(4).png')} />
-          </TouchableOpacity>
-        </View>
-        <View style={{ display: 'flex', alignItems: 'center', flex: 1 }}></View>
-        <View style={styles.profileCard}>
-          <View style={{ margin: 20, display: 'flex', justifyContent: 'center' }}>
-            <View style={{ width: win.width / 4, height: win.width / 4, borderRadius: win.width / 8, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#512DA8', display: 'flex', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ position: 'absolute', fontSize: 35, fontWeight: 'bold', color: '#fff' }} accessibilityLabel='profilesubname'>{name.slice(0, 2).toUpperCase()}</Text>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <ScrollView>
+        <View style={styles.loginWrap}>
+          <View style={{ display: 'flex', alignItems: 'center', height: 40 }}></View>
+          <View style={{ flexDirection: 'row', marginBottom: 15, }}>
+            <Text style={styles.title}>Profile</Text>
+            <TouchableOpacity style={{ marginLeft: 'auto', marginRight: 30 }}
+            // onPress={() => navigation.navigate('Questionnaire')}
+            >
+              <Image style={{ width: 15, height: 15, marginTop: 'auto', marginBottom: 10 }} source={require('../../../assets/icons/Vector_(4).png')} />
+            </TouchableOpacity>
+          </View>
+          <View style={{ display: 'flex', alignItems: 'center', flex: 1 }}></View>
+          <View style={styles.profileCard}>
+            <View style={{ margin: 20, display: 'flex', justifyContent: 'center' }}>
+              <View style={{ width: win.width / 4, height: win.width / 4, borderRadius: win.width / 8, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#512DA8', display: 'flex', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ position: 'absolute', fontSize: 35, fontWeight: 'bold', color: '#fff' }} accessibilityLabel='profilesubname'>{name.slice(0, 2).toUpperCase()}</Text>
+              </View>
+            </View>
+            <View >
+              <Text style={{ textAlign: 'center', fontSize: 24, fontWeight: '600', width: 'auto' }} data-cy="profilename">{name}</Text>
+            </View>
+            <View style={{ flexDirection: 'row', paddingLeft: 10, display: 'flex', justifyContent: 'center' }}>
+              <Image style={{ margin: 10, width: 25, height: 25, marginRight: 5 }} source={require('../../../assets/icons/fluent_mail-16-filled.png')} />
+              <Text style={{ margin: 10, fontSize: 16, fontWeight: '400' }} data-cy="profileemail">{email}</Text>
             </View>
           </View>
-          <View >
-            <Text style={{ textAlign: 'center', fontSize: 24, fontWeight: '600', width: 'auto' }} data-cy="profilename">{name}</Text>
+          <View>
+            <Text style={{ margin: 20, fontSize: 20, fontWeight: '500' }}>Categories</Text>
           </View>
-          <View style={{ flexDirection: 'row', paddingLeft: 10, display: 'flex', justifyContent: 'center' }}>
-            <Image style={{ margin: 10, width: 25, height: 25, marginRight: 5 }} source={require('../../../assets/icons/fluent_mail-16-filled.png')} />
-            <Text style={{ margin: 10, fontSize: 16, fontWeight: '400' }} data-cy="profileemail">{email}</Text>
+          <View>
+            <TouchableOpacity accessibilityRole='button' accessibilityLabel='toqapage0' onPress={() => navigation.navigate('Questionnaire', { category_name: "Appliances", user_id: '6ffea4d4-9065-4521-a8f5-a239311ad9ef' })}>
+              <Text style={{ color: 'white' }}>d</Text>
+            </TouchableOpacity>
           </View>
+          <View style={{ flexDirection: 'row', width: win.width - 40, marginLeft: 20, marginBottom: 20, display: 'flex', flexWrap: 'wrap' }}>
+            {
+              renderList()
+            }
+          </View>
+          <View style={{ height: 80 }}></View>
         </View>
-        <View>
-          <Text style={{ margin: 20, fontSize: 20, fontWeight: '500' }}>Categories</Text>
-        </View>
-        <View>
-          <TouchableOpacity accessibilityRole='button' accessibilityLabel='toqapage0' onPress={() => navigation.navigate('Questionnaire', { category_name: "Appliances", user_id: '6ffea4d4-9065-4521-a8f5-a239311ad9ef' })}>
-            <Text style={{ color: 'white' }}>d</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ flexDirection: 'row', width: win.width - 40, marginLeft: 20, marginBottom: 20, display: 'flex', flexWrap: 'wrap' }}>
-          {
-            renderList()
-          }
-        </View>
-        <View style={{ height: 80 }}></View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
+
   );
 };
 
