@@ -73,7 +73,7 @@ const UserScreen = ({ navigation, route, value }: { navigation: NavigationProp<a
                 <TouchableOpacity
                   onPress={() => navigation.navigate('Questionnaire', { category_name: category.name, user_id: userid, catename_data })}
                 >
-                  <Text style={styles.btn_start} accessibilityRole='button' accessibilityLabel='qaStart' >Start</Text>
+                  <Text style={[styles.btn_start,{width:win.width / 5 -10}]} accessibilityRole='button' accessibilityLabel='qaStart' >Start</Text>
                 </TouchableOpacity>
               }
             </View>
@@ -195,13 +195,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   btn_start: {
-    paddingTop: 11,
-    paddingBottom: 11,
-    paddingLeft: 15,
-    paddingRight: 14,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 14,
+    paddingRight: 12,
     backgroundColor: '#297EE4',
     color: 'white',
     borderRadius: 29,
-    width: 75,
   },
 });
